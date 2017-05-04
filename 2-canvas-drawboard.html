@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>在线画板</title>
+<script src="jquery.min.js"></script>
+
+</head>
+<body>
+<canvas id='mycanvas' width='400px' height="300px" style="background-color:black">
+您的浏览器不支持canvas
+</canvas>
+<script>
+  var canvasl=document.getElementById('mycanvas');
+  //简单地检测当前浏览器是否支持Canvas对象，以免在一些不支持html5的浏览器中提示语法错误
+     if(canvasl.getContext){  
+    //获取对应的CanvasRenderingContext2D对象(画笔)
+
+   var cxt=canvasl.getContext('2d');
+  
+  cxt.strokeStyle='red';
+  cxt.lineWidth=5;
+  
+  var paint=0;
+  
+  $('#mycanvas').mousedown(function(e){
+	  var mouseX=e.pageX-this.offsetLeft;
+	  var mouseY=e.pageY-this.offsetTop;
+	  cxt.beginPath();
+	  cxt.moveTo(mouseX,mouseY);
+	  paint=1;
+	  })
+	  
+   $('#mycanvas').mouseup(function(){
+	   paint=0;
+	   })
+   
+   $('#mycanvas').mousemove(function(e){
+	  var mouseX=e.pageX-this.offsetLeft;
+	  var mouseY=e.pageY-this.offsetTop;
+	  
+	  if(paint==1){
+		  cxt.lineTo(mouseX,mouseY);
+	      cxt.stroke();
+		}
+   })
+		  
+	 $(document).keydown(function(e){
+		 var code=event.keyCode;
+		 if(code==68){
+			 cxt.clearRect(0,0,400,300);
+			 }
+		
+		 })
+		 }
+</script>
+</body>
+
+</html>
