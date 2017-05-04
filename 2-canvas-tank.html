@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+</head>
+<!--当按键后，去调用test-->
+<body onkeydown="getCommand()">
+<h1>坦克动起来啦！</h1>
+<canvas id="mycanvas" width="400px" height="300px" style="background-color:black">
+</canvas>
+<script src='tankGame.js'></script>
+<script type="text/javascript">
+   //得到画布
+	var canvas1 = document.getElementById("mycanvas");
+	
+	//得到绘图上下文
+	var cxt = canvas1.getContext("2d");
+
+
+   //实例化我的坦克
+   var hero=new Hero(80,80,0,heroColor);
+   
+   //定义子弹组
+   var herobullets=new Array();
+   
+   //敌人的坦克
+   var enemyTanks=new Array();
+   for(var i=0;i<3;i++){
+	   var enemyTank=new EnemyTank((i+1)*50,0,2,enemyColor);
+	       enemyTanks[i]=enemyTank;
+	   }
+	   
+	//画子弹
+	function drawBullet(bullet){
+		   cxt.fillStyle='#FEF26E';
+		   cxt.fillRect(bullet.x,bullet.y,2,2);
+		}
+	
+	//刷新战区
+	function flashMap(){
+		//把画布清理
+		cxt.clearRect(0,0,400,300);
+		
+		//画自己的坦克
+		drawTank(hero);
+		
+		//画子弹
+		for(var i=0;i<herobullets.length;i++){
+			  drawBullet(herobullets[i]);
+			}
+		
+		//画敌人的坦克
+		for(var i=0;i<enemyTanks.length;i++){
+			drawTank(enemyTanks[i]);
+			}
+		}
+	flashMap();
+		
+	
+	//现在按键盘上ASDW移动小球
+	//说明：当我们按下一个键，实际上触发了一个onkeydown事件
+	function getCommand(){
+		var code = event.keyCode;  //键盘上字幕的ASCII码
+		switch(code){
+			case 87://w;  上
+				hero.moveUp();
+				break;
+			case 68://D;  右
+				hero.moveRight();
+				break;
+			case 83://S;  下
+				hero.moveDown();
+				break;
+			case 65://A   左
+				hero.moveLeft();
+				break;
+			case 74://J:  发子弹
+				hero.shotEnemy();
+				break;
+		}
+		//重新绘制
+	flashMap();
+	}
+	window.setInterval('flashMap()',100);
+</script>
+</body>
+</html>
